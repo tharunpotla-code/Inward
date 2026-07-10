@@ -18,8 +18,7 @@ export default function Home() {
             height={36}
             className="rounded-md"
           />
-          <h1 className="text-lg font-bold text-gray-900">HomeRun</h1>
-        </div>
+<button className="w-full flex items-center gap-3 px-3 py-2 rounded-md bg-blue-600 text-white text-sm font-medium">        </div>
 
         {/* Menu Items */}
         <nav className="p-2 space-y-1 flex-1">
