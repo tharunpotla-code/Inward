@@ -1,82 +1,31 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
-    <div className="min-h-screen bg-white text-gray-800 font-sans">
+    <div className="min-h-screen flex bg-white text-gray-800 font-sans">
       
-      {/* Top Header */}
-      <header className="bg-gray-50 border-b border-gray-200 p-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      {/* Sidebar */}
+      <aside className="w-64 bg-gray-50 border-r border-gray-200 min-h-screen flex flex-col">
+        
+        {/* Logo */}
+        <div className="p-4 border-b border-gray-200 flex items-center gap-3">
           <Image
             src="/logo.png"
             alt="HomeRun Logo"
-            width={40}
-            height={40}
-            className="rounded-lg"
+            width={36}
+            height={36}
+            className="rounded-md"
           />
-          <h1 className="text-xl font-bold text-gray-900">HomeRun</h1>
+          <h1 className="text-lg font-bold text-gray-900">HomeRun</h1>
         </div>
-        
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="p-2 rounded-lg hover:bg-gray-200"
-        >
-          <span className="text-2xl">☰</span>
-        </button>
-      </header>
 
-      {/* Menu (shows when opened) */}
-      {menuOpen && (
-        <nav className="bg-gray-50 border-b border-gray-200 p-4 space-y-2">
-          <Link href="/vendor-locations">
-            <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 hover:text-white text-gray-700 cursor-pointer transition">
-              <span className="text-xl">📍</span>
-              <span className="font-medium">Vendor Locations</span>
-            </div>
-          </Link>
-          <Link href="/printer-problems">
-            <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 hover:text-white text-gray-700 cursor-pointer transition">
-              <span className="text-xl">🖨️</span>
-              <span className="font-medium">Printer Problems</span>
-            </div>
-          </Link>
-        </nav>
-      )}
-
-      {/* Main Content */}
-      <main className="p-6 sm:p-10">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-4">Welcome to HomeRun 👋</h1>
-        <p className="text-gray-600 text-lg mb-8">
-          Tap the menu (☰) at the top right to see options.
-        </p>
-
-        {/* Big cards on homepage */}
-        <div className="grid gap-4 sm:grid-cols-2 max-w-2xl">
+        {/* Menu Items */}
+        <nav className="p-2 space-y-1 flex-1">
           
-          <Link href="/vendor-locations">
-            <div className="border-2 border-gray-200 hover:border-blue-600 rounded-xl p-6 cursor-pointer transition">
-              <div className="text-4xl mb-3">📍</div>
-              <h2 className="text-xl font-bold mb-1">Vendor Locations</h2>
-              <p className="text-gray-600 text-sm">View all vendor locations</p>
-            </div>
-          </Link>
-
-          <Link href="/printer-problems">
-            <div className="border-2 border-gray-200 hover:border-blue-600 rounded-xl p-6 cursor-pointer transition">
-              <div className="text-4xl mb-3">🖨️</div>
-              <h2 className="text-xl font-bold mb-1">Printer Problems</h2>
-              <p className="text-gray-600 text-sm">Report printer issues</p>
-            </div>
-          </Link>
-
-        </div>
-      </main>
-
-    </div>
-  );
-}
+          {/* Home - Active */}
+          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md bg-blue-600 text-white text-sm font-medium">
+            <span className="text-base">🏠</span>
+            <span>Home</span>
+          </button>
