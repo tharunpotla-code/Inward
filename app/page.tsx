@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
@@ -11,9 +12,13 @@ export default function Home() {
       {/* Top Header */}
       <header className="bg-gray-50 border-b border-gray-200 p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-            H
-          </div>
+          <Image
+            src="/logo.png"
+            alt="HomeRun Logo"
+            width={40}
+            height={40}
+            className="rounded-lg"
+          />
           <h1 className="text-xl font-bold text-gray-900">HomeRun</h1>
         </div>
         
