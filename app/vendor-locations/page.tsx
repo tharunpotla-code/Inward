@@ -61,14 +61,18 @@ export default function VendorLocations() {
         ) : filtered.length === 0 ? (
           <p className="text-gray-500">No vendors found</p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-3">
             {filtered.map((v) => (
-              <div key={v.id} className="border border-gray-200 rounded-lg p-5">
-                <h2 className="text-lg font-bold mb-3">{v.Name}</h2>
-                <p className="text-sm text-gray-600 mb-1">📞 {v["Contact number 1"]}</p>
-                {v["Contact numer 2"] && <p className="text-sm text-gray-600 mb-3">📞 {v["Contact numer 2"]}</p>}
+              <div key={v.id} className="border border-gray-200 rounded-lg p-4 flex items-center justify-between gap-4 hover:bg-gray-50">
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-base font-bold text-gray-900 truncate">{v.Name}</h2>
+                </div>
+                <div className="flex-1 flex flex-col text-sm text-gray-600">
+                  <span>📞 {v["Contact number 1"]}</span>
+                  {v["Contact numer 2"] && <span>📞 {v["Contact numer 2"]}</span>}
+                </div>
                 {v["Map link"] && (
-                  <a href={v["Map link"]} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 bg-blue-600 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-700">
+                  <a href={v["Map link"]} target="_blank" rel="noopener noreferrer" className="bg-blue-600 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-700 whitespace-nowrap">
                     🗺️ Go to Map
                   </a>
                 )}
