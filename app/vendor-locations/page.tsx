@@ -32,7 +32,6 @@ export default function VendorLocations() {
 
   return (
     <div className="min-h-screen flex bg-white text-gray-900 font-sans antialiased">
-      {/* Sidebar */}
       <aside className="w-72 bg-gray-50 border-r border-gray-200 min-h-screen p-4">
         <div className="flex items-center gap-3 mb-6 pb-4 border-b">
           <Image src="/logo.png" alt="HomeRun" width={40} height={40} className="rounded-md" />
@@ -64,53 +63,5 @@ export default function VendorLocations() {
         </div>
       </aside>
 
-      {/* Main content */}
       <main className="flex-1 p-10">
         <h1 className="text-4xl font-semibold mb-2">Vendors Locations 📍</h1>
-        <p className="text-gray-500 text-base mb-8">Tap a vendor to call or view location.</p>
-
-        {loading && <p className="text-gray-400">Loading vendors...</p>}
-        {error && <p className="text-red-500">Error: {error}</p>}
-        {!loading && !error && vendors.length === 0 && (
-          <p className="text-gray-400">No vendors found.</p>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
-          {vendors.map((vendor) => (
-            <div
-              key={vendor.id}
-              className="border-2 border-gray-200 rounded-xl p-6 bg-white shadow-sm hover:shadow-md transition"
-            >
-              <h2 className="text-xl font-bold mb-4">{vendor.Name}</h2>
-
-              <div className="space-y-2">
-                
-                  href={`tel:${vendor["Contact number 1"]}`}
-                  className="block w-full text-center border-2 border-blue-300 bg-blue-50 hover:bg-blue-100 rounded-lg px-4 py-2 font-medium"
-                >
-                  📞 Call {vendor["Contact number 1"]}
-                </a>
-
-                
-                  href={`tel:${vendor["Contact numer 2"]}`}
-                  className="block w-full text-center border-2 border-blue-300 bg-blue-50 hover:bg-blue-100 rounded-lg px-4 py-2 font-medium"
-                >
-                  📞 Call {vendor["Contact numer 2"]}
-                </a>
-
-                
-                  href={vendor["Map link"]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full text-center border-2 border-green-300 bg-green-50 hover:bg-green-100 rounded-lg px-4 py-2 font-medium"
-                >
-                  🗺️ Open in Maps
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </main>
-    </div>
-  );
-}
