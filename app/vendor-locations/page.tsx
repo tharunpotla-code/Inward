@@ -12,17 +12,14 @@ export default function VendorLocations() {
   useEffect(() => {
     async function fetchVendors() {
       const { data, error } = await supabase.from("Vendors").select("*");
-      if (error) {
-        console.error("Error:", error);
-      } else {
-        setVendors(data || []);
-      }
+      if (error) console.error(error);
+      else setVendors(data || []);
       setLoading(false);
     }
     fetchVendors();
   }, []);
 
-  const filteredVendors = vendors.filter((v) =>
+  const filtered = vendors.filter((v) =>
     v.Name?.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -51,25 +48,21 @@ export default function VendorLocations() {
       </aside>
       <main className="flex-1 p-8">
         <h1 className="text-2xl font-bold mb-2">Vendors Locations 📍</h1>
-        <p className="text-gray-600 text-sm mb-6">{filteredVendors.length} of {vendors.length} vendors</p>
-        
-        <div className="mb-6 max-w-md">
-          <input
-            type="text"
-            placeholder="🔍 Search vendors by name..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
-          />
-        </div>
-
+        <p className="text-gray-600 text-sm mb-6">{filtered.length} of {vendors.length} vendors</p>
+        <input
+          type="text"
+          placeholder="🔍 Search vendors by name..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full max-w-md mb-6 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
+        />
         {loading ? (
           <p>Loading...</p>
-        ) : filteredVendors.length === 0 ? (
-          <p className="text-gray-500">No vendors found matching "{search}"</p>
+        ) : filtered.length === 0 ? (
+          <p className="text-gray-500">No vendors found</p>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredVendors.map((v) => (
+            {filtered.map((v) => (
               <div key={v.id} className="border border-gray-200 rounded-lg p-5">
                 <h2 className="text-lg font-bold mb-3">{v.Name}</h2>
                 <p className="text-sm text-gray-600 mb-1">📞 {v["Contact number 1"]}</p>
@@ -81,3 +74,9 @@ export default function VendorLocations() {
                 )}
               </div>
             ))}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
