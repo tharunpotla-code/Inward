@@ -44,24 +44,51 @@ export default function VendorLocations() {
               <span className="text-base font-semibold">Home</span>
             </div>
           </Link>
-          <Link href="/our-locations">
-            <div className="border-2 border-l-8 border-blue-400 bg-blue-50 hover:bg-blue-100 rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer">
-              <span className="text-2xl">🏢</span>
-              <span className="text-base font-semibold">Our Locations</span>
-            </div>
-          </Link>
           <div className="border-2 border-l-8 border-green-400 bg-green-100 rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer">
             <span className="text-2xl">📍</span>
             <span className="text-base font-semibold">Vendors Locations</span>
           </div>
-          <Link href="/printer-problems">
-            <div className="border-2 border-l-8 border-purple-400 bg-purple-50 hover:bg-purple-100 rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer">
-              <span className="text-2xl">🖨️</span>
-              <span className="text-base font-semibold">Printer Problems</span>
-            </div>
-          </Link>
         </div>
       </aside>
 
       <main className="flex-1 p-10">
         <h1 className="text-4xl font-semibold mb-2">Vendors Locations 📍</h1>
+        <p className="text-gray-600 mb-8">All our vendor partners</p>
+
+        {loading && <p>Loading vendors...</p>}
+        {error && <p className="text-red-600">Error: {error}</p>}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {vendors.map((vendor) => (
+            <div
+              key={vendor.id}
+              className="border-2 border-gray-200 rounded-xl p-5 hover:border-green-400 hover:shadow-md transition"
+            >
+              <h2 className="text-xl font-semibold mb-3">{vendor.Name}</h2>
+              {vendor["Contact number 1"] && (
+                <p className="text-gray-700 mb-1">📞 {vendor["Contact number 1"]}</p>
+              )}
+              {vendor["Contact numer 2"] && (
+                <p className="text-gray-700 mb-3">📞 {vendor["Contact numer 2"]}</p>
+              )}
+              {vendor["Map link"] && (
+                
+                  href={vendor["Map link"]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block text-blue-600 hover:underline text-sm"
+                >
+                  📍 Open in Maps
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {!loading && vendors.length === 0 && !error && (
+          <p className="text-gray-500">No vendors found.</p>
+        )}
+      </main>
+    </div>
+  );
+}
