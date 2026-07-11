@@ -24,5 +24,8 @@ export default function VendorLocations() {
   );
 
   return (
-    <div className="min-h-screen flex bg-white text-gray-900" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif', letterSpacing: '-0.01em' }}>
-      <aside className="w-64
+    <div className="min-h-screen flex bg-white text-gray-900 font-sans antialiased tracking-tight">
+      <aside className="w-64 bg-gray-50 border-r border-gray-200 min-h-screen flex flex-col">
+        <div className="p-4 border-b border-gray-200 flex items-center gap-3">
+          <Image src="/logo.png" alt="HomeRun" width={36} height={36} className="rounded-md" />
+          <h1 className="text-lg font-semibold text-gray-900">HomeRun</h1>
