@@ -1,27 +1,38 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { GoogleMap, Marker, InfoWindow, useLoadScript } from "@react-google-maps/api";
+import "leaflet/dist/leaflet.css";
+
+const MapContainer = dynamic(() => import("react-leaflet").then((m) => m.MapContainer), { ssr: false });
+const TileLayer = dynamic(() => import("react-leaflet").then((m) => m.TileLayer), { ssr: false });
+const Marker = dynamic(() => import("react-leaflet").then((m) => m.Marker), { ssr: false });
+const Popup = dynamic(() => import("react-leaflet").then((m) => m.Popup), { ssr: false });
 
 export default function Home() {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-  });
-
   const [ourLocations, setOurLocations] = useState<any[]>([]);
   const [vendors, setVendors] = useState<any[]>([]);
-  const [selected, setSelected] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
+    setMounted(true);
+    (async () => {
       const { data: locs } = await supabase.from("Our Locations").select("*");
       const { data: vends } = await supabase.from("Vendors").select("*");
       setOurLocations(locs || []);
       setVendors(vends || []);
-    }
-    fetchData();
+    })();
+    (async () => {
+      const L = (await import("leaflet")).default;
+      delete (L.Icon.Default.prototype as any)._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+      });
+    })();
   }, []);
 
   return (
@@ -32,71 +43,33 @@ export default function Home() {
           <h1 className="text-lg font-semibold">HomeRun</h1>
         </div>
         <div className="space-y-3">
-          <div className="border-2 border-l-8 border-yellow-400 bg-yellow-100 rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer">
-            <span className="text-2xl">🏠</span>
-            <span className="text-base font-semibold">Home</span>
-          </div>
-          <Link href="/vendor-locations">
-            <div className="border-2 border-l-8 border-green-400 bg-green-50 hover:bg-green-100 rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer">
-              <span className="text-2xl">📍</span>
-              <span className="text-base font-semibold">Vendors Locations</span>
-            </div>
-          </Link>
+          <div className="border-2 border-l-8 border-yellow-400 bg-yellow-100 rounded-xl px-4 py-3 cursor-pointer"><span className="text-base font-semibold">🏠 Home</span></div>
+          <Link href="/vendor-locations"><div className="border-2 border-l-8 border-green-400 bg-green-50 hover:bg-green-100 rounded-xl px-4 py-3 cursor-pointer"><span className="text-base font-semibold">📍 Vendors Locations</span></div></Link>
         </div>
       </aside>
-
       <main className="flex-1 p-10">
         <h1 className="text-4xl font-semibold mb-2">Welcome to HomeRun 👋</h1>
         <p className="text-gray-600 mb-8">India&apos;s Building Material App</p>
-
-        {!isLoaded ? (
-          <div>Loading map...</div>
-        ) : (
-          <GoogleMap
-            mapContainerStyle={{ width: "100%", height: "600px", borderRadius: "12px" }}
-            center={{ lat: 20.5937, lng: 78.9629 }}
-            zoom={5}
-            mapTypeId="satellite"
-          >
-            {ourLocations.map((loc, i) => (
-              <Marker
-                key={`our-${i}`}
-                position={{ lat: parseFloat(loc.Latitude), lng: parseFloat(loc.Longitude) }}
-                icon={{ url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png" }}
-                onClick={() => setSelected({ ...loc, type: "Our Location" })}
-              />
-            ))}
-            {vendors.map((v, i) => (
-              <Marker
-                key={`vendor-${i}`}
-                position={{ lat: parseFloat(v.Latitude), lng: parseFloat(v.Longitude) }}
-                icon={{ url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png" }}
-                onClick={() => setSelected({ ...v, type: "Vendor" })}
-              />
-            ))}
-            {selected && (
-              <InfoWindow
-                position={{ lat: parseFloat(selected.Latitude), lng: parseFloat(selected.Longitude) }}
-                onCloseClick={() => setSelected(null)}
-              >
-                <div style={{ color: "black" }}>
-                  <strong>{selected.type}</strong>
-                  <p>{selected.Name}</p>
-                </div>
-              </InfoWindow>
-            )}
-          </GoogleMap>
+        {mounted && (
+          <div style={{ height: "600px", width: "100%", borderRadius: "12px", overflow: "hidden" }}>
+            <MapContainer center={[20.5937, 78.9629]} zoom={5} style={{ height: "100%", width: "100%" }}>
+              <TileLayer attribution='&copy; OpenStreetMap' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              {ourLocations.map((loc, i) => (
+                <Marker key={`our-${i}`} position={[parseFloat(loc.Latitude), parseFloat(loc.Longitude)]}>
+                  <Popup><strong>Our Location</strong><br />{loc.Name}</Popup>
+                </Marker>
+              ))}
+              {vendors.map((v, i) => (
+                <Marker key={`vendor-${i}`} position={[parseFloat(v.Latitude), parseFloat(v.Longitude)]}>
+                  <Popup><strong>Vendor</strong><br />{v.Name}</Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </div>
         )}
-
         <div className="mt-6 flex gap-6 text-sm">
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-blue-500"></span>
-            <span>Our Locations ({ourLocations.length})</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-green-500"></span>
-            <span>Vendors ({vendors.length})</span>
-          </div>
+          <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-blue-500"></span><span>Our Locations ({ourLocations.length})</span></div>
+          <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-green-500"></span><span>Vendors ({vendors.length})</span></div>
         </div>
       </main>
     </div>
