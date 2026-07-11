@@ -9,27 +9,27 @@ export default function Home() {
           <Image src="/logo.png" alt="HomeRun" width={36} height={36} className="rounded-md" />
           <h1 className="text-lg font-semibold">HomeRun</h1>
         </div>
-        <div className="space-y-3">
-          <div className="border-2 border-yellow-400 bg-yellow-50 rounded-xl p-4 cursor-pointer">
-            <div className="text-3xl mb-2">🏠</div>
-            <div className="text-sm font-semibold">Home</div>
+        <div className="space-y-2">
+          <div className="border-l-4 border-yellow-400 bg-yellow-50 rounded-md px-3 py-2.5 flex items-center gap-3 cursor-pointer">
+            <span className="text-xl">🏠</span>
+            <span className="text-sm font-semibold">Home</span>
           </div>
           <Link href="/our-locations">
-            <div className="border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 rounded-xl p-4 cursor-pointer">
-              <div className="text-3xl mb-2">🏢</div>
-              <div className="text-sm font-semibold">Our Locations</div>
+            <div className="border-l-4 border-blue-400 bg-blue-50 hover:bg-blue-100 rounded-md px-3 py-2.5 flex items-center gap-3 cursor-pointer">
+              <span className="text-xl">🏢</span>
+              <span className="text-sm font-semibold">Our Locations</span>
             </div>
           </Link>
           <Link href="/vendor-locations">
-            <div className="border-2 border-green-200 bg-green-50 hover:bg-green-100 rounded-xl p-4 cursor-pointer">
-              <div className="text-3xl mb-2">📍</div>
-              <div className="text-sm font-semibold">Vendors Locations</div>
+            <div className="border-l-4 border-green-400 bg-green-50 hover:bg-green-100 rounded-md px-3 py-2.5 flex items-center gap-3 cursor-pointer">
+              <span className="text-xl">📍</span>
+              <span className="text-sm font-semibold">Vendors Locations</span>
             </div>
           </Link>
           <Link href="/printer-problems">
-            <div className="border-2 border-purple-200 bg-purple-50 hover:bg-purple-100 rounded-xl p-4 cursor-pointer">
-              <div className="text-3xl mb-2">🖨️</div>
-              <div className="text-sm font-semibold">Printer Problems</div>
+            <div className="border-l-4 border-purple-400 bg-purple-50 hover:bg-purple-100 rounded-md px-3 py-2.5 flex items-center gap-3 cursor-pointer">
+              <span className="text-xl">🖨️</span>
+              <span className="text-sm font-semibold">Printer Problems</span>
             </div>
           </Link>
         </div>
