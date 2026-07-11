@@ -4,27 +4,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
-type Vendor = {
-  id: number;
-  Name: string;
-  "Contact number 1": string;
-  "Contact numer 2": string;
-  "Map link": string;
-};
-
 export default function VendorLocations() {
-  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [vendors, setVendors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchVendors() {
-      const { data, error } = await supabase.from("Vendors").select("*");
-      if (error) {
-        setError(error.message);
-      } else {
-        setVendors(data || []);
-      }
+      const { data } = await supabase.from("Vendors").select("*");
+      setVendors(data || []);
       setLoading(false);
     }
     fetchVendors();
@@ -52,40 +39,37 @@ export default function VendorLocations() {
       </aside>
 
       <main className="flex-1 p-10">
-        <h1 className="text-4xl font-semibold mb-2">Vendors Locations 📍</h1>
+        <h1 className="text-4xl font-semibold mb-2">Vendors Locations</h1>
         <p className="text-gray-600 mb-8">All our vendor partners</p>
 
         {loading && <p>Loading vendors...</p>}
-        {error && <p className="text-red-600">Error: {error}</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {vendors.map((vendor) => (
-            <div
-              key={vendor.id}
-              className="border-2 border-gray-200 rounded-xl p-5 hover:border-green-400 hover:shadow-md transition"
-            >
-              <h2 className="text-xl font-semibold mb-3">{vendor.Name}</h2>
-              {vendor["Contact number 1"] && (
-                <p className="text-gray-700 mb-1">📞 {vendor["Contact number 1"]}</p>
-              )}
-              {vendor["Contact numer 2"] && (
-                <p className="text-gray-700 mb-3">📞 {vendor["Contact numer 2"]}</p>
-              )}
-              {vendor["Map link"] && (
-                
-                  href={vendor["Map link"]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block text-blue-600 hover:underline text-sm"
-                >
-                  📍 Open in Maps
-                </a>
-              )}
-            </div>
-          ))}
+          {vendors.map((vendor, i) => {
+            const contact1 = vendor["Contact number 1"];
+            const contact2 = vendor["Contact numer 2"];
+            const mapLink = vendor["Map link"];
+            return (
+              <div key={i} className="border-2 border-gray-200 rounded-xl p-5">
+                <h2 className="text-xl font-semibold mb-3">{vendor.Name}</h2>
+                {contact1 && <p className="text-gray-700 mb-1">Contact: {contact1}</p>}
+                {contact2 && <p className="text-gray-700 mb-3">Contact: {contact2}</p>}
+                {mapLink && (
+                  
+                    href={mapLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline text-sm"
+                  >
+                    Open in Maps
+                  </a>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        {!loading && vendors.length === 0 && !error && (
+        {!loading && vendors.length === 0 && (
           <p className="text-gray-500">No vendors found.</p>
         )}
       </main>
